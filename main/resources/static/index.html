@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Сортировка пузырьком</title>
+    <meta charset="UTF-8">
+    <style>
+        body { margin: 20px; font-family: Arial; }
+        button { margin: 10px 0; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+<h2>Сортировка чисел</h2>
+<div>
+    <label>Введите числа через запятую:</label><br>
+    <input type="text" id="numbers" placeholder="Например: 5,2,8,1,9">
+    <button onclick="sortNumbers()">Отсортировать</button>
+</div>
+<div id="result"></div>
+
+<script>
+    function sortNumbers() {
+        const numbers = document.getElementById('numbers').value;
+        fetch('/sort', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                numbers: numbers.split(',').map(n => parseInt(n.trim()))
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML =
+                    `<p>ID сортировки: ${data.sortingId}</p>
+                     <p>Отсортированный массив: ${data.sortedArray}</p>`;
+            });
+    }
+</script>
+</body>
+</html>
